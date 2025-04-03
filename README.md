@@ -7,8 +7,8 @@ The Interior Design Voice AI Agent automates lead qualification and client commu
 ## Technologies Used
 
 - **n8n**: Workflow automation platform.
-- **Vapi/ElevenLabs**: Voice synthesis tools for creating the AI agent.
-- **Airtable/Google Sheets**: Platforms for lead management.
+- **Vapi**: Voice synthesis tools for creating the AI agent.
+- **Airtable**: Platforms for lead management.
 - **Twilio**: Service for making outbound calls.
 - **OpenAI**: Optional integration for advanced conversational intelligence.
 
@@ -99,16 +99,3 @@ The Interior Design Voice AI Agent automates lead qualification and client commu
 - **Functionality**: Ensure that the workflows correctly fetch leads, initiate calls, and update statuses as intended.
 - **Voice Agent Effectiveness**: The agent should efficiently qualify leads while maintaining a professional and helpful demeanor.
 - **Error Handling**: The system should gracefully manage edge cases such as unanswered calls and inappropriate language.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- **n8n**: For providing a flexible workflow automation platform.
-- **Vapi/ElevenLabs**: For advanced voice synthesis capabilities.
-- **Twilio**: For reliable communication services.
-- **OpenAI**: For conversational AI technologies (optional integration).
-
-*Note: Replace placeholders like `[LICENSE](LICENSE)` with actual links to your project's license file or relevant documentation.*
