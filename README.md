@@ -1,57 +1,114 @@
-Interior Design Voice AI Agent
-This project automates lead qualification and client communication for Interia, a growing interior design firm. The system uses n8n for workflow automation and Vapi/ElevenLabs for voice synthesis.
+# Interior Design Voice AI Agent
 
-Technologies Used
-n8n: Automation platform.
+## Overview
 
-Vapi/ElevenLabs: Voice AI tools for creating the agent.
+The Interior Design Voice AI Agent automates lead qualification and client communication for **Interia**, an interior design firm. This system integrates multiple technologies to streamline the process of handling incoming leads, qualifying potential clients, and managing client communications.
 
-Airtable/Google Sheets: Lead management.
+## Technologies Used
 
-Twilio: For making outbound calls.
+- **n8n**: Workflow automation platform.
+- **Vapi/ElevenLabs**: Voice synthesis tools for creating the AI agent.
+- **Airtable/Google Sheets**: Platforms for lead management.
+- **Twilio**: Service for making outbound calls.
+- **OpenAI**: Optional integration for advanced conversational intelligence.
 
-OpenAI: For advanced conversation intelligence (optional).
+## Setup Instructions
 
-Setup Instructions
-1. Airtable/Google Sheets Setup:
-Create the following tables:
+### 1. Airtable/Google Sheets Setup
 
-Leads: Stores lead details (Name, Contact, Status, etc.)
+- **Leads Table**: Create a table with the following columns:
+  - `id`: Unique identifier for each lead.
+  - `First Name`: Lead's first name.
+  - `Last Name`: Lead's last name.
+  - `Mobile`: Lead's mobile number.
+  - `Email`: Lead's email address.
+  - `Status`: Current status of the lead (e.g., TBC, In-Progress, Called, Failed).
+  - `Attempt`: Number of call attempts made.
+  - `Date Time`: Date and time of the lead's submission.
+  - `Summary`: Brief summary of the lead's inquiry.
+  - `Assignee`: Assigned staff member.
+  
+- **Call Records Table**: Create a table with the following columns:
+  - `id`: Unique identifier for each call record.
+  - `callproviderID`: Identifier for the call provider.
+  - `phonenumberID`: Identifier for the phone number used.
+  - `customernumber`: Customer's phone number.
+  - `type`: Type of call (e.g., outbound, inbound).
+  - `started`: Call start time.
+  - `ended`: Call end time.
+  - `milliseconds`: Duration of the call in milliseconds.
+  - `cost`: Cost of the call.
+  - `ended reason`: Reason for call termination.
+  - `transcript`: Transcript of the call.
 
-Call Records: Logs call details (start time, call status, etc.)
+### 2. n8n Workflow Setup
 
-2. n8n Workflow Setup:
-Import the n8n JSON workflow into your instance.
+- **Workflow 1: Outbound Calling**
+  - **Trigger**: Schedule the workflow to run at regular intervals.
+  - **Action**: Fetch leads with the status "TBC" from Airtable/Google Sheets.
+  - **Process**: Initiate calls through Vapi/ElevenLabs and update the lead status to "In-Progress".
 
-Set up API integrations for Twilio and Vapi/ElevenLabs.
+- **Workflow 2: Call Result Processing**
+  - **Trigger**: Set up a webhook to receive call results.
+  - **Action**: Process different call outcomes (e.g., successful, unanswered, failed).
+  - **Process**: Update lead statuses based on outcomes and create detailed call records in Airtable/Google Sheets.
 
-Configure triggers to periodically fetch new leads from Airtable/Google Sheets.
+### 3. Voice Agent Configuration (Vapi/ElevenLabs)
 
-3. Voice Agent Configuration (Vapi/ElevenLabs):
-Set up your voice agent with the required persona.
+- **Agent Setup**: Configure the voice agent with a professional and warm persona.
+- **Conversation Flow**: Define the structured conversation path, including:
+  - Introduction and purpose of the call.
+  - Need discovery and information gathering.
+  - Qualification assessment.
+  - Next steps based on qualification.
+  - Professional closing.
 
-Define the conversation flow and qualification logic in Vapi/ElevenLabs.
+- **Qualification Questions**: Program the agent to ask key questions regarding:
+  - Budget alignment.
+  - Project location.
+  - Timeline expectations.
+  - Scope of the project.
+  - Property size.
 
-4. Twilio Configuration:
-Integrate Twilio with n8n for outbound calls.
+### 4. Twilio Configuration
 
-Configure test phone numbers for the system.
+- **Integration**: Connect Twilio with n8n to handle outbound calls.
+- **Test Numbers**: Configure test phone numbers to simulate client interactions during development.
 
-How It Works
-Lead Retrieval: Leads with the "TBC" status are fetched from Airtable/Google Sheets.
+## How It Works
 
-Voice Interaction: The voice agent calls the lead, collects information, and qualifies the lead.
+1. **Lead Retrieval**: The system fetches leads with the "TBC" status from Airtable/Google Sheets at scheduled intervals.
+2. **Voice Interaction**: The voice agent contacts each lead, introduces itself, asks qualifying questions, and gathers necessary information.
+3. **Lead Status Update**: Based on the conversation outcome, the lead's status is updated in Airtable/Google Sheets (e.g., "In-Progress," "Called," "Failed").
+4. **Call Logging**: Detailed records of each call, including transcripts and outcomes, are stored in the Call Records Table for future reference.
 
-Lead Status Update: Based on the outcome, the lead status is updated in Airtable/Google Sheets (e.g., "In-Progress," "Called," "Failed").
+## Edge Case Handling
 
-Edge Case Handling
-Unanswered Calls: Retry after 1 minute, mark as "Failed" after two attempts.
+- **Unanswered Calls**: If a call is not answered, the system retries after 1 minute. After two failed attempts, the lead is marked as "Failed" with the reason "Unreachable".
+- **Abusive Language**: The agent is programmed to respond professionally to inappropriate language and end the call politely if necessary.
+- **Identity Denial**: If a client denies making an inquiry, the agent apologizes for the confusion and verifies the contact information.
+- **Callback Requests**: The system allows clients to request callbacks at specific times, which are scheduled accordingly.
 
-Abusive Language: The agent responds politely and ends the call.
+## Running the System
 
-Callback Requests: Reschedule calls based on the client’s request.
+- **Automated Workflow**: The n8n workflows automate the process of fetching leads, initiating calls, and updating statuses.
+- **Monitoring**: Regularly check Airtable/Google Sheets for updates on lead statuses and review call records for quality assurance.
 
-Running the System
-Automated Workflow: Use the n8n workflows to automate lead management.
+## Evaluation Criteria
 
-Monitor Progress: Check Airtable/Google Sheets for lead status updates and call results.
+- **Functionality**: Ensure that the workflows correctly fetch leads, initiate calls, and update statuses as intended.
+- **Voice Agent Effectiveness**: The agent should efficiently qualify leads while maintaining a professional and helpful demeanor.
+- **Error Handling**: The system should gracefully manage edge cases such as unanswered calls and inappropriate language.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- **n8n**: For providing a flexible workflow automation platform.
+- **Vapi/ElevenLabs**: For advanced voice synthesis capabilities.
+- **Twilio**: For reliable communication services.
+- **OpenAI**: For conversational AI technologies (optional integration).
+
+*Note: Replace placeholders like `[LICENSE](LICENSE)` with actual links to your project's license file or relevant documentation.*
