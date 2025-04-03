@@ -1,0 +1,717 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "call-results",
+        "options": {}
+      },
+      "id": "ec751477-9dc9-485c-9ec7-bc7936dcf17f",
+      "name": "Webhook - Receive Call Results",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        1700,
+        200
+      ],
+      "typeVersion": 2,
+      "webhookId": "4b3f6d35-cb46-4f90-a29b-bc67de54712c"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Logic to parse incoming data\nconst callData = $json;\n\n// Extract necessary fields\nconst leadID = callData.leadID; // Ensure this is the correct field for the lead ID\nconst callOutcome = callData.callOutcome;\nconst callDuration = callData.callDuration;\nconst callTimestamp = callData.callTimestamp;\nconst callProvider = callData.callProvider;\n\n// Handle Lead Status Update based on call outcome\nlet leadStatus = '';\n\nif (callOutcome === 'successful') {\n  leadStatus = 'Called';\n} else if (callOutcome === 'unreachable') {\n  leadStatus = 'Failed';\n} else if (callOutcome === 'in-progress') {\n  leadStatus = 'In-Progress';\n} else {\n  leadStatus = 'TBC';  // Ensure 'TBC' is a valid option in Airtable\n}\n\n// Prepare updated lead data for Airtable update\nconst updateLeadData = {\n  id: leadID,  // Pass the extracted leadID here\n  fields: {\n    Status: leadStatus, // Ensure this is one of the valid values in Airtable\n    CallOutcome: callOutcome,\n    CallDuration: callDuration,\n    CallTimestamp: callTimestamp,\n    CallProvider: callProvider\n  }\n};\n\n// Return the data in the expected format for Airtable update\nreturn [{ json: updateLeadData }];\n"
+      },
+      "id": "255f5cb6-d962-4c84-9853-fb90140dba8e",
+      "name": "Function - Process Call Results",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        1900,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appp0OuWWb3U6CTim",
+          "mode": "list",
+          "cachedResultName": "Interior Design Lead Management",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblsrJHZIZpkWqsOI",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim/tblsrJHZIZpkWqsOI"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": 0,
+            "Attempt": 0,
+            "Status": "={{ $json.fields.Status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile",
+              "displayName": "Mobile",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "TBC",
+                  "value": "TBC"
+                },
+                {
+                  "name": "In-Progress",
+                  "value": "In-Progress"
+                },
+                {
+                  "name": "Called",
+                  "value": "Called"
+                },
+                {
+                  "name": "Failed",
+                  "value": "Failed"
+                }
+              ],
+              "readOnly": false
+            },
+            {
+              "id": "Attempt",
+              "displayName": "Attempt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date Time",
+              "displayName": "Date Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Call Records",
+              "displayName": "Call Records",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "39ae9f6c-f6cb-4dc7-bf26-052d6515eb82",
+      "name": "Airtable - Update Lead Status",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        2100,
+        200
+      ],
+      "typeVersion": 2.1,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "NML0mQ6BhU3QqK8H",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appp0OuWWb3U6CTim",
+          "mode": "list",
+          "cachedResultName": "Interior Design Lead Management",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblyeBpgeEuVc6dHn",
+          "mode": "list",
+          "cachedResultName": "Call Records",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim/tblyeBpgeEuVc6dHn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.fields.ID }}",
+            "Duration (ms)": 0,
+            "Cost": 0
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Call Provider ID",
+              "displayName": "Call Provider ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number ID",
+              "displayName": "Phone Number ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Customer Number",
+              "displayName": "Customer Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Outbound",
+                  "value": "Outbound"
+                },
+                {
+                  "name": "Follow-up",
+                  "value": "Follow-up"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Started",
+              "displayName": "Started",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Ended",
+              "displayName": "Ended",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Duration (ms)",
+              "displayName": "Duration (ms)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cost",
+              "displayName": "Cost",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "End Reason",
+              "displayName": "End Reason",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Completed",
+                  "value": "Completed"
+                },
+                {
+                  "name": "Unanswered",
+                  "value": "Unanswered"
+                },
+                {
+                  "name": "Declined",
+                  "value": "Declined"
+                },
+                {
+                  "name": "Voicemail",
+                  "value": "Voicemail"
+                },
+                {
+                  "name": "Call Dropped",
+                  "value": "Call Dropped"
+                },
+                {
+                  "name": "Abusive",
+                  "value": "Abusive"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Transcript",
+              "displayName": "Transcript",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Lead Reference",
+              "displayName": "Lead Reference",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "e6a5b2b8-1726-48a3-b053-44273597e75e",
+      "name": "Airtable - Create Call Record",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        2300,
+        200
+      ],
+      "typeVersion": 2.1,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "NML0mQ6BhU3QqK8H",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "c390f479-8f97-40f9-b626-af271f759032",
+      "name": "Set Lead Attempt Count",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2500,
+        200
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appp0OuWWb3U6CTim",
+          "mode": "list",
+          "cachedResultName": "Interior Design Lead Management",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblsrJHZIZpkWqsOI",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appp0OuWWb3U6CTim/tblsrJHZIZpkWqsOI"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": 0,
+            "Attempt": 0,
+            "Status": "={{ $('Function - Process Call Results').item.json.fields.Status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mobile",
+              "displayName": "Mobile",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "TBC",
+                  "value": "TBC"
+                },
+                {
+                  "name": "In-Progress",
+                  "value": "In-Progress"
+                },
+                {
+                  "name": "Called",
+                  "value": "Called"
+                },
+                {
+                  "name": "Failed",
+                  "value": "Failed"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Attempt",
+              "displayName": "Attempt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false
+            },
+            {
+              "id": "Date Time",
+              "displayName": "Date Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Call Records",
+              "displayName": "Call Records",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "4fbf480b-55d6-4789-a500-9fc49db3f614",
+      "name": "Airtable - Update Lead Attempt",
+      "type": "n8n-nodes-base.airtable",
+      "position": [
+        2700,
+        200
+      ],
+      "typeVersion": 2.1,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "NML0mQ6BhU3QqK8H",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Receive Call Results": {
+      "main": [
+        [
+          {
+            "node": "Function - Process Call Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function - Process Call Results": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Update Lead Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Update Lead Status": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Create Call Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Lead Attempt Count": {
+      "main": [
+        [
+          {
+            "node": "Airtable - Update Lead Attempt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable - Create Call Record": {
+      "main": [
+        [
+          {
+            "node": "Set Lead Attempt Count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "da3358a4-af7a-447a-8da3-6991da02620b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e3eb00e9bf58f8927d6c826f2ad1396db2cc4ac998c1f9fd899c965b94bd6e8"
+  },
+  "id": "0QxdAAt8ssnyRXHa",
+  "tags": []
+}
