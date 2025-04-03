@@ -45,7 +45,7 @@ The Interior Design Voice AI Agent automates lead qualification and client commu
 
 - **Workflow 1: Outbound Calling**
   - **Trigger**: Schedule the workflow to run at regular intervals.
-  - **Action**: Fetch leads with the status "TBC" from Airtable/Google Sheets.
+  - **Action**: Fetch leads with the status "TBC" from Airtable.
   - **Process**: Initiate calls through Vapi/ElevenLabs and update the lead status to "In-Progress".
 
 - **Workflow 2: Call Result Processing**
@@ -77,7 +77,7 @@ The Interior Design Voice AI Agent automates lead qualification and client commu
 
 ## How It Works
 
-1. **Lead Retrieval**: The system fetches leads with the "TBC" status from Airtable/Google Sheets at scheduled intervals.
+1. **Lead Retrieval**: The system fetches leads with the "TBC" status from Airtable at scheduled intervals.
 2. **Voice Interaction**: The voice agent contacts each lead, introduces itself, asks qualifying questions, and gathers necessary information.
 3. **Lead Status Update**: Based on the conversation outcome, the lead's status is updated in Airtable/Google Sheets (e.g., "In-Progress," "Called," "Failed").
 4. **Call Logging**: Detailed records of each call, including transcripts and outcomes, are stored in the Call Records Table for future reference.
@@ -92,10 +92,5 @@ The Interior Design Voice AI Agent automates lead qualification and client commu
 ## Running the System
 
 - **Automated Workflow**: The n8n workflows automate the process of fetching leads, initiating calls, and updating statuses.
-- **Monitoring**: Regularly check Airtable/Google Sheets for updates on lead statuses and review call records for quality assurance.
+- **Monitoring**: Regularly check Airtable for updates on lead statuses and review call records for quality assurance.
 
-## Evaluation Criteria
-
-- **Functionality**: Ensure that the workflows correctly fetch leads, initiate calls, and update statuses as intended.
-- **Voice Agent Effectiveness**: The agent should efficiently qualify leads while maintaining a professional and helpful demeanor.
-- **Error Handling**: The system should gracefully manage edge cases such as unanswered calls and inappropriate language.
